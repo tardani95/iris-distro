@@ -6,3 +6,7 @@ pod-build
 build/
 externals_config.cmake
 iris_wrapper.py
+
+cmake-build-debug/
+
+.idea/
