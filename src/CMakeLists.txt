@@ -20,8 +20,29 @@ include(GNUInstallDirs)
 list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_SOURCE_DIR}/../cmake")
 
 find_package(pybind11 CONFIG REQUIRED)
-find_package(Mosek CONFIG REQUIRED)
 find_package(NumPy MODULE REQUIRED)
+find_package(mosek 9.3 REQUIRED)
+# find_package(MOSEK CONFIG REQUIRED)
+
+# MOSEK library detection
+# find_path(MOSEK_INCLUDE NAMES mosek.h PATHS ${MOSEK_SEARCH_HEADER})
+# find_library(MOSEK_LIB NAMES libmosek64 libmosek64.so PATHS ${MOSEK_SEARCH_LIB})
+# if(EXISTS ${MOSEK_INCLUDE} AND EXISTS ${MOSEK_LIB})
+#   set(MOSEK_FOUND   true  CACHE BOOL "USE MOSEK library")
+#   message("-- Found Mosek header in: ${MOSEK_INCLUDE}")
+#   message("-- Found Mosek library: ${MOSEK_LIB}")
+#   INCLUDE_DIRECTORIES( ${MOSEK_INCLUDE} )
+#   link_directories( ${MOSEK_LIB} )
+# else(EXISTS ${MOSEK_INCLUDE} AND EXISTS ${MOSEK_LIB})
+#   message("-- Did not find MOSEK header")
+#   if(NOT EXISTS ${MOSEK_LIB})
+#     message("-- Did not find MOSEK library")
+#   endif()
+# endif(EXISTS ${MOSEK_INCLUDE} AND EXISTS ${MOSEK_LIB})
+
+# if(NOT MOSEK_FOUND)
+#   message(STATUS "Could not find mosek library on this machine.")
+# endif()
 
 # Newer versions of Eigen 3 define imported targets in their package
 # configuration files, so try to locate such a file before using the legacy
