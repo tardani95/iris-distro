@@ -10,3 +10,7 @@ iris_wrapper.py
 cmake-build-debug/
 
 .idea/
+
+commonroad_irispy.egg-info/
+
+dist/
