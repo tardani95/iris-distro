@@ -5,7 +5,7 @@ setup(
     version='0.1',
     description='Adjusted version of the original IRIS repo',
     url='',
-    author='tard',
+    author='Daniel Tar',
     author_email='daniel.tar@tum.de',
     license='same as in the original repo',
     package_dir={"irispy": "build/install/lib/python3.7/dist-packages/irispy"},

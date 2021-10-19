@@ -57,7 +57,7 @@ This project is configured as a standard CMake project, so the general build pro
 ------------------------------
 Installation without externals
 ------------------------------
-By default, IRIS will build its external dependencies as part of the build process. If you want to turn any or all of them off, you can set the `WITH_EIGEN`, `WITH_CDD`, and `WITH_MOSEK` options to `OFF` using cmake. The easiest way to do that is to run:
+By default, IRIS will build its external dependencies as part of the build process. If you want to turn any or all of them off, you can set the `IRIS_WITH_EIGEN`, `IRIS_WITH_CDD`, and `IRIS_WITH_MOSEK` options to `OFF` using cmake. The easiest way to do that is to run:
 
     cd build
     ccmake .
