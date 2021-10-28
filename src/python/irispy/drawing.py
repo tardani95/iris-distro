@@ -17,6 +17,7 @@ def draw(self, ax=None, **kwargs):
     else:
         raise NotImplementedError("drawing for objects of dimension <2 or >3 not implemented yet")
 
+
 def draw2d(self, ax=None, **kwargs):
     if ax is None:
         ax = plt.gca()
@@ -24,12 +25,14 @@ def draw2d(self, ax=None, **kwargs):
     kwargs.setdefault("edgecolor", self.default_color)
     return draw_2d_convhull(points, ax, **kwargs)
 
+
 def draw3d(self, ax=None, **kwargs):
     if ax is None:
         ax = a3.Axes3D(plt.gcf())
     points = self.getDrawingVertices()
     kwargs.setdefault("facecolor", self.default_color)
     return draw_3d_convhull(points, ax, **kwargs)
+
 
 def draw_convhull(points, ax, **kwargs):
     dim = points.shape[1]
@@ -40,10 +43,12 @@ def draw_convhull(points, ax, **kwargs):
     else:
         raise NotImplementedError("not implemented for dimension < 2 or > 3")
 
+
 def draw_2d_convhull(points, ax, **kwargs):
     hull = scipy.spatial.ConvexHull(points)
     kwargs.setdefault("facecolor", "none")
-    return [ax.add_patch(plt.Polygon(xy=points[hull.vertices],**kwargs))]
+    return [ax.add_patch(plt.Polygon(xy=points[hull.vertices], **kwargs))]
+
 
 def draw_3d_convhull(points, ax, **kwargs):
     kwargs.setdefault("edgecolor", "k")
@@ -61,9 +66,16 @@ def draw_3d_convhull(points, ax, **kwargs):
             ax.add_collection3d(poly)
             artists.append(poly)
     except QhullError as e:
-        p3dc = Poly3DCollection(points, **kwargs)
-        ax.add_collection3d(p3dc)
-        artists.append(p3dc)
+        if len(points) >= 3:
+            # TODO: fix plotting color
+            col = ax.plot_trisurf(points[:, 0], points[:, 1], points[:, 2], **kwargs)
+        else:
+            col = ax.plot(points[:, 0], points[:, 1], points[:, 2], "ko-")
+        # p3dc = Poly3DCollection(points, **kwargs)
+        # ax.add_collection3d(p3dc)
+        if isinstance(col, list):
+            artists.extend(col)
+        else:
+            artists.append(col)
 
     return artists
-
