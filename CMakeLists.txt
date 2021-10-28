@@ -168,9 +168,12 @@ else()
   set(EXTERNAL_PROJECT_ADD_BUILD_ALWAYS BUILD_ALWAYS 1)
 endif()
 
-set(CDD_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR}/cdd-src/lib-src)
-message(STATUS "ccd include dirs: ${CDD_INCLUDE_DIRS}")
-list(APPEND IRIS_CMAKE_ARGS "-DCDD_INCLUDE_DIR=${CDD_INCLUDE_DIRS}")
+
+if(IRIS_WITH_CDD)
+  set(CDD_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR}/cdd-src/lib-src)
+  message(STATUS "ccd include dirs: ${CDD_INCLUDE_DIRS}")
+  list(APPEND IRIS_CMAKE_ARGS "-DCDD_INCLUDE_DIR=${CDD_INCLUDE_DIRS}")
+endif()
 
 ExternalProject_Add(iris
   SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src"
