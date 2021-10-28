@@ -5,6 +5,8 @@ import scipy.spatial
 import numpy as np
 from matplotlib.colors import colorConverter
 import mpl_toolkits.mplot3d as a3
+from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+from scipy.spatial.qhull import QhullError
 
 
 def draw(self, ax=None, **kwargs):
@@ -48,13 +50,20 @@ def draw_3d_convhull(points, ax, **kwargs):
     kwargs.setdefault("facecolor", "r")
     kwargs.setdefault("alpha", 0.5)
     kwargs["facecolor"] = colorConverter.to_rgba(kwargs["facecolor"], kwargs["alpha"])
-    hull = scipy.spatial.ConvexHull(points)
+
     artists = []
-    for simplex in hull.simplices:
-        poly = a3.art3d.Poly3DCollection([points[simplex]], **kwargs)
-        if "alpha" in kwargs:
-            poly.set_alpha(kwargs["alpha"])
-        ax.add_collection3d(poly)
-        artists.append(poly)
+    try:
+        hull = scipy.spatial.ConvexHull(points)
+        for simplex in hull.simplices:
+            poly = Poly3DCollection([points[simplex]], **kwargs)
+            if "alpha" in kwargs:
+                poly.set_alpha(kwargs["alpha"])
+            ax.add_collection3d(poly)
+            artists.append(poly)
+    except QhullError as e:
+        p3dc = Poly3DCollection(points, **kwargs)
+        ax.add_collection3d(p3dc)
+        artists.append(p3dc)
+
     return artists
 

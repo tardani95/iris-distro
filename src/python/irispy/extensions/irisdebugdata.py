@@ -43,13 +43,8 @@ def animate(self, fig=None, pause=0.5, show=True, repeat_delay=2.0):
         artists.extend(poly.draw(ax))
         artists.extend(ellipsoid.draw(ax))
         for obs in self.getObstacles():
-            if len(obs.T) < 4:
-                if dim == 3:
-                    artists.extend(ax.plot(obs[0][:], obs[1][:], obs[2][:], 'ko-'))
-                else:
-                    artists.extend(ax.plot(obs[0][:], obs[1][:], 'ko-'))
-            else:
-                artists.extend(drawing.draw_convhull(obs.T, ax, edgecolor='k', facecolor='k', alpha=0.5))
+            artists.extend(drawing.draw_convhull(obs.T, ax, edgecolor='k', facecolor='k', alpha=0.5))
+
         artist_sets.append(tuple(artists))
 
     ani = animation.ArtistAnimation(fig, artist_sets, interval=pause * 1000, repeat_delay=repeat_delay * 1000)
