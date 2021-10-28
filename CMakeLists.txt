@@ -82,20 +82,16 @@ if(IRIS_WITH_CDD)
 
   ExternalProject_Add(cdd
     DOWNLOAD_DIR "${CMAKE_CURRENT_BINARY_DIR}/cdd-download"
-    URL https://d2tbce6hkathzp.cloudfront.net/other/cddlib/cddlib-094h.tar.gz
-    URL_HASH SHA256=fe6d04d494683cd451be5f6fe785e147f24e8ce3ef7387f048e739ceb4565ab5
+    URL https://github.com/cddlib/cddlib/releases/download/0.94m/cddlib-0.94m.tar.gz
+    URL_MD5 ec7f35912e34232b5306a643f99b6311
     TLS_VERIFY 1
     SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/cdd-src"
-    PATCH_COMMAND "${PATCH_EXECUTABLE}" -p1 < "${CMAKE_CURRENT_SOURCE_DIR}/cdd.patch"
     CONFIGURE_COMMAND ${AUTOTOOLS_ENV} "<SOURCE_DIR>/configure" "--prefix=${CMAKE_INSTALL_PREFIX}"
     BUILD_COMMAND ${AUTOTOOLS_ENV} ${MAKE_COMMAND}
     BUILD_IN_SOURCE 1)
   ExternalProject_Get_Property(cdd SOURCE_DIR)
-  ExternalProject_Add_Step(cdd install_setoper_header
-    COMMAND "${CMAKE_COMMAND}" -E copy "${SOURCE_DIR}/lib-src/setoper.h" "${CMAKE_INSTALL_PREFIX}/include"
-    DEPENDEES install
-    COMMENT "installing setoper.h header manually")
   list(APPEND IRIS_DEPENDENCIES cdd)
+
 endif()
 
 if(IRIS_WITH_MOSEK)
@@ -171,6 +167,10 @@ if(CMAKE_VERSION VERSION_LESS 3.2)
 else()
   set(EXTERNAL_PROJECT_ADD_BUILD_ALWAYS BUILD_ALWAYS 1)
 endif()
+
+set(CDD_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR}/cdd-src/lib-src)
+message(STATUS "ccd include dirs: ${CDD_INCLUDE_DIRS}")
+list(APPEND IRIS_CMAKE_ARGS "-DCDD_INCLUDE_DIR=${CDD_INCLUDE_DIRS}")
 
 ExternalProject_Add(iris
   SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src"
