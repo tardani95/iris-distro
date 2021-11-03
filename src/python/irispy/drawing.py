@@ -70,7 +70,7 @@ def draw_3d_convhull(points, ax, **kwargs):
             # TODO: fix plotting color
             try:
                 col = ax.plot_trisurf(points[:, 0], points[:, 1], points[:, 2], **kwargs)
-            except ValueError:
+            except Exception:
                 # happens when the surface is vertical
                 p3dc = Poly3DCollection(points, **kwargs)
                 col = ax.add_collection3d(p3dc)
