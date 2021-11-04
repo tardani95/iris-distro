@@ -8,9 +8,10 @@ setup(
     author='Daniel Tar',
     author_email='daniel.tar@tum.de',
     license='same as in the original repo',
-    package_dir={"irispy": "build/install/lib/python3.7/dist-packages/irispy"},
-    packages=find_packages('build/install/lib/python3.7/dist-packages'),
-    package_data={'irispy': ['iris_wrapper.cpython-37m-x86_64-linux-gnu.so']},
+    package_dir={"irispy": "src/python/irispy"},
+    packages=find_packages('src/python'),
+    package_data={
+        'irispy': ['build/install/lib/python3.7/dist-packages/irispy/iris_wrapper.cpython-37m-x86_64-linux-gnu.so']},
     # packages=['build/install/lib/python3.7/dist-packages'],
     include_package_data=True,
     install_requires=[
