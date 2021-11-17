@@ -298,6 +298,7 @@ double inner_ellipsoid(const iris::Polyhedron &polyhedron, iris::Ellipsoid *elli
 
   switch(solsta) {
     case MSK_SOL_STA_OPTIMAL:
+    case MSK_SOL_STA_NEAR_OPTIMAL:
       xx = (double *) MSK_calloctask(task, nvar, sizeof(MSKrealt));
       barx = (double *) MSK_calloctask(task, len_bar[0], sizeof(MSKrealt));
 
@@ -318,9 +319,10 @@ double inner_ellipsoid(const iris::Polyhedron &polyhedron, iris::Ellipsoid *elli
       MSK_freetask(task,xx);
       MSK_freetask(task,barx);
       break;
-    case MSK_SOL_STA_DUAL_INFEAS_CER: 
-    case MSK_SOL_STA_PRIM_INFEAS_CER: 
-      std::cout << "Primal or dual infeasibility certificate found." << std::endl;
+    case MSK_SOL_STA_DUAL_INFEAS_CER:
+    case MSK_SOL_STA_PRIM_INFEAS_CER:
+    case MSK_SOL_STA_NEAR_DUAL_INFEAS_CER:
+    case MSK_SOL_STA_NEAR_PRIM_INFEAS_CER:
       std::cout << "inner_ellipsoid() - Primal or dual infeasibility certificate found." << std::endl;
       throw(InnerEllipsoidInfeasibleError());
     case MSK_SOL_STA_UNKNOWN:
@@ -422,12 +424,14 @@ void closest_point_in_convex_hull(const MatrixXd &Points, VectorXd &result, MSKe
   MSK_getsolsta(task, MSK_SOL_ITR, &solsta);
   switch(solsta) {
     case MSK_SOL_STA_OPTIMAL:
-    case MSK_SOL_STA_UNKNOWN: 
+    case MSK_SOL_STA_NEAR_OPTIMAL:
+    case MSK_SOL_STA_UNKNOWN:
       MSK_getxxslice(task, MSK_SOL_ITR, 0, dim, result.data());
       break;
-    case MSK_SOL_STA_DUAL_INFEAS_CER: 
-    case MSK_SOL_STA_PRIM_INFEAS_CER: 
-      std::cout << "Primal or dual infeasibility certificate found." << std::endl;
+    case MSK_SOL_STA_DUAL_INFEAS_CER:
+    case MSK_SOL_STA_PRIM_INFEAS_CER:
+    case MSK_SOL_STA_NEAR_DUAL_INFEAS_CER:
+    case MSK_SOL_STA_NEAR_PRIM_INFEAS_CER:
       std::cout << "closest_point_in_convex_hull(): Primal or dual infeasibility certificate found." << std::endl;
       if (!existing_env) {
         MSK_deleteenv(env);
