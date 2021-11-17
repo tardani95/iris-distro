@@ -15,12 +15,12 @@ void check_res(MSKrescodee res) {
   }
 }
 
-/* This function prints log output from MOSEK to the terminal. */ 
-static void MSKAPI printstr(void *handle, 
-                            const char str[]) 
-{ 
-  printf("%s",str); 
-} /* printstr */ 
+/* This function prints log output from MOSEK to the terminal. */
+static void MSKAPI printstr(void *handle,
+                            const char str[])
+{
+  printf("%s",str);
+} /* printstr */
 
 void extract_solution(double* xx, double* barx, int n, std::vector<int> ndx_d, iris::Ellipsoid *ellipsoid) {
   int bar_ndx = 0;
@@ -80,7 +80,7 @@ double inner_ellipsoid(const iris::Polyhedron &polyhedron, iris::Ellipsoid *elli
   check_res(MSK_maketask(*env, ncon, 0, &task));
 
   #ifndef NDEBUG
-    /* Directs the log task stream to the 'printstr' function. */ 
+    /* Directs the log task stream to the 'printstr' function. */
     check_res(MSK_linkfunctotaskstream(task,MSK_STREAM_LOG,NULL,printstr));
   #endif
 
@@ -264,7 +264,7 @@ double inner_ellipsoid(const iris::Polyhedron &polyhedron, iris::Ellipsoid *elli
   check_res(MSK_putbarablocktriplet(task, nabar, bara_i.data(), bara_j.data(), bara_k.data(), bara_l.data(), bara_v.data()));
 
   check_res(MSK_putobjsense(task, MSK_OBJECTIVE_SENSE_MAXIMIZE));
-  
+
   // #ifndef NDEBUG
   //   for (int i=0; i < 16; i++) {
   //     MSKint32t nzi;
@@ -306,32 +306,33 @@ double inner_ellipsoid(const iris::Polyhedron &polyhedron, iris::Ellipsoid *elli
 
       extract_solution(xx, barx, n, ndx_d, ellipsoid);
 
-      // debug("Optimal primal solution"); 
+      // debug("Optimal primal solution");
       // #ifndef NDEBUG
-      //   for(int i=0; i < nvar; ++i) 
-      //     printf("x[%d]   : % e\n",i,xx[i]); 
+      //   for(int i=0; i < nvar; ++i)
+      //     printf("x[%d]   : % e\n",i,xx[i]);
 
-      //   for(int i=0; i < len_bar[0]; ++i) 
-      //     printf("barx[%d]: % e\n",i,barx[i]); 
+      //   for(int i=0; i < len_bar[0]; ++i)
+      //     printf("barx[%d]: % e\n",i,barx[i]);
       // #endif
-       
-      MSK_freetask(task,xx); 
-      MSK_freetask(task,barx); 
+
+      MSK_freetask(task,xx);
+      MSK_freetask(task,barx);
       break;
     case MSK_SOL_STA_DUAL_INFEAS_CER: 
     case MSK_SOL_STA_PRIM_INFEAS_CER: 
       std::cout << "Primal or dual infeasibility certificate found." << std::endl;
+      std::cout << "inner_ellipsoid() - Primal or dual infeasibility certificate found." << std::endl;
       throw(InnerEllipsoidInfeasibleError());
-    case MSK_SOL_STA_UNKNOWN: 
-      std::cout << "Inner ellipsoid: The status of the solution could not be determined." << std::endl;
-      std::cout << "A: " << std::endl << polyhedron.getA() << std::endl;
-      std::cout << "b: " << polyhedron.getB().transpose() << std::endl;
+    case MSK_SOL_STA_UNKNOWN:
+      std::cout << "inner_ellipsoid() - Inner ellipsoid: The status of the solution could not be determined." << std::endl;
+      std::cout << "inner_ellipsoid() - A: " << std::endl << polyhedron.getA() << std::endl;
+      std::cout << "inner_ellipsoid() - b: " << polyhedron.getB().transpose() << std::endl;
       throw(InnerEllipsoidInfeasibleError());
-    default: 
-      printf("other solution status: %d\n", solsta);
+    default:
+      printf("inner_ellipsoid() - other solution status: %d\n", solsta);
       throw(InnerEllipsoidInfeasibleError());
   }
-  
+
 
   MSKrealt obj_val;
   MSK_getprimalobj(task, MSK_SOL_ITR, &obj_val);
@@ -427,6 +428,7 @@ void closest_point_in_convex_hull(const MatrixXd &Points, VectorXd &result, MSKe
     case MSK_SOL_STA_DUAL_INFEAS_CER: 
     case MSK_SOL_STA_PRIM_INFEAS_CER: 
       std::cout << "Primal or dual infeasibility certificate found." << std::endl;
+      std::cout << "closest_point_in_convex_hull(): Primal or dual infeasibility certificate found." << std::endl;
       if (!existing_env) {
         MSK_deleteenv(env);
         free(env);
@@ -439,8 +441,8 @@ void closest_point_in_convex_hull(const MatrixXd &Points, VectorXd &result, MSKe
       //   free(env);
       // }
       // throw(InnerEllipsoidInfeasibleError());
-    default: 
-      printf("other solution status: %d\n", solsta);
+    default:
+      printf("closest_point_in_convex_hull(): other solution status: %d\n", solsta);
       if (!existing_env) {
         MSK_deleteenv(env);
         free(env);

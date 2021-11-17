@@ -180,6 +180,7 @@ IRISRegion inflate_region(const IRISProblem &problem, const IRISOptions &options
     p_time += elapsed.count();
 
     if (options.error_on_infeasible_start && infeasible_start) {
+      std::cout << "inflate_region() - Infeasible initial point error! In iteration: " << iter << std::endl;
       throw(InitialPointInfeasibleError());
     }
 
@@ -208,7 +209,7 @@ IRISRegion inflate_region(const IRISProblem &problem, const IRISOptions &options
           debug->polyhedron_history.push_back(new_poly);
         }
       } else {
-        std::cout << "breaking early because the start point is no longer contained in the polyhedron" << std::endl;
+        std::cout << "inflate_region() - breaking early because the start point is no longer contained in the polyhedron" << std::endl;
         return region;
       }
     } else {
@@ -242,7 +243,7 @@ IRISRegion inflate_region(const IRISProblem &problem, const IRISOptions &options
       break;
     }
 
-    best_vol = volume; // always true because ellipsoid volume is guaranteed to be non-decreasing (see Deits14). 
+    best_vol = volume; // always true because ellipsoid volume is guaranteed to be non-decreasing (see Deits14).
     iter++;
     if (debug) {
       debug->iters = iter;
