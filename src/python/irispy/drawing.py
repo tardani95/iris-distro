@@ -45,9 +45,13 @@ def draw_convhull(points, ax, **kwargs):
 
 
 def draw_2d_convhull(points, ax, **kwargs):
-    hull = scipy.spatial.ConvexHull(points)
+    try:
+        hull = scipy.spatial.ConvexHull(points)
+        polygon_points = points[hull.vertices]
+    except QhullError as e:
+        polygon_points = points
     kwargs.setdefault("facecolor", "none")
-    return [ax.add_patch(plt.Polygon(xy=points[hull.vertices], **kwargs))]
+    return [ax.add_patch(plt.Polygon(xy=polygon_points, **kwargs))]
 
 
 def draw_3d_convhull(points, ax, **kwargs):
