@@ -41,11 +41,13 @@ set(IRIS_DEPENDENCIES)
 
 if(IRIS_WITH_EIGEN)
   ExternalProject_Add(eigen3
-    DOWNLOAD_DIR "${CMAKE_CURRENT_BINARY_DIR}/eigen3-download"
-    URL https://gitlab.com/libeigen/eigen/-/archive/3.3.3/eigen-3.3.3.tar.gz
-    URL_HASH SHA256=fd72694390bd8e81586205717d2cf823e718f584b779a155db747d1e68481a2e
-    TLS_VERIFY 1
+#    DOWNLOAD_DIR "${CMAKE_CURRENT_BINARY_DIR}/eigen3-download"
+#    URL https://gitlab.com/libeigen/eigen/-/archive/3.3.3/eigen-3.3.3.tar.gz
+#    URL_HASH SHA256=fd72694390bd8e81586205717d2cf823e718f584b779a155db747d1e68481a2e
+#    TLS_VERIFY 1
     SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/eigen3-src"
+    GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
+    GIT_TAG 3.3
     CMAKE_ARGS
       -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
       "-DCMAKE_CXX_COMPILER_LAUNCHER=${CMAKE_CXX_COMPILER_LAUNCHER}"
