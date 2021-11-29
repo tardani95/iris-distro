@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.12)
 project(iris_distro)
 
 include(ExternalProject)
@@ -41,11 +41,9 @@ set(IRIS_DEPENDENCIES)
 
 if(IRIS_WITH_EIGEN)
   ExternalProject_Add(eigen3
-    DOWNLOAD_DIR "${CMAKE_CURRENT_BINARY_DIR}/eigen3-download"
-    URL https://gitlab.com/libeigen/eigen/-/archive/3.3.3/eigen-3.3.3.tar.gz
-    URL_HASH SHA256=fd72694390bd8e81586205717d2cf823e718f584b779a155db747d1e68481a2e
-    TLS_VERIFY 1
     SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/eigen3-src"
+    GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
+    GIT_TAG 3.3
     CMAKE_ARGS
       -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
       "-DCMAKE_CXX_COMPILER_LAUNCHER=${CMAKE_CXX_COMPILER_LAUNCHER}"
@@ -97,8 +95,8 @@ endif()
 if(IRIS_WITH_MOSEK)
   ExternalProject_Add(mosek
     SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/mosek-src"
-    GIT_REPOSITORY https://github.com/RobotLocomotion/mosek.git
-    GIT_TAG e4bcf2234391c2a16adbce3063090e77e3b1f027
+    GIT_REPOSITORY https://github.com/tardani95/mosek.git
+    GIT_TAG v9.3.10
     CMAKE_ARGS
       -DBUILD_TESTING=OFF
       -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}

@@ -20,8 +20,8 @@ include(GNUInstallDirs)
 list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_SOURCE_DIR}/../cmake")
 
 find_package(pybind11 CONFIG REQUIRED)
-find_package(NumPy MODULE REQUIRED)
-find_package(mosek 7.1 REQUIRED)
+#find_package(NumPy MODULE REQUIRED)
+find_package(mosek 9.3 REQUIRED)
 # find_package(MOSEK CONFIG REQUIRED)
 
 # MOSEK library detection
