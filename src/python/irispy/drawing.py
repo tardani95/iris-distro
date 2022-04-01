@@ -76,8 +76,11 @@ def draw_3d_convhull(points, ax, **kwargs):
                 col = ax.plot_trisurf(points[:, 0], points[:, 1], points[:, 2], **kwargs)
             except Exception:
                 # happens when the surface is vertical
-                p3dc = Poly3DCollection(points, **kwargs)
-                col = ax.add_collection3d(p3dc)
+                try:
+                    p3dc = Poly3DCollection(points, **kwargs)
+                    col = ax.add_collection3d(p3dc)
+                except Exception:
+                    col = ax.plot(points[:, 0], points[:, 1], points[:, 2], "ko-")
         else:
             col = ax.plot(points[:, 0], points[:, 1], points[:, 2], "ko-")
         # p3dc = Poly3DCollection(points, **kwargs)
